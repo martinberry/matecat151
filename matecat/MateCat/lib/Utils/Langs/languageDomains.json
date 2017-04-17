@@ -1,0 +1,18 @@
+[
+    {
+        "key": "general",
+        "display": "General"
+    },
+    {
+        "key": "media_politics",
+        "display": "Politics"
+    },
+    {
+        "key": "accounting_finance",
+        "display": "Finance"
+    },
+    {
+        "key": "information_technology",
+        "display": "Information Technology"
+    }
+]

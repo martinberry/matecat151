@@ -1,0 +1,74 @@
+version: '2'
+
+networks:
+  matecat-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.18.1.0/24
+          ip_range: 172.18.1.0/24
+          gateway: 172.18.1.1
+
+services:
+  filters:
+    #build: ./MateCat-Trusty/MateCatFilters/
+    image: pennymax/dockermatecat_filters
+    container_name: docker_matecat_filter
+    ports:
+      - 8732:8732
+    networks:
+       - matecat-network
+
+  redis:
+    image: pennymax/redis
+    ports:
+      - 6379:6379
+    networks:
+       - matecat-network
+
+  amq:
+    #build: ./MateCat-Trusty/AMQ/
+    image: pennymax/dockermatecat_amq
+    container_name: docker_amq
+    ports:
+      - 61613:61613
+      - 8161:8161
+    networks:
+       - matecat-network
+
+  mysql:
+    #build: ./MateCat-Trusty/MySQL/
+    image: pennymax/dockermatecat_mysql
+    container_name: docker_mysql
+    ports:
+     - 3306:3306
+    networks:
+       - matecat-network
+
+  matecat:
+    #build: ./MateCat-Trusty/MateCatApache/
+    image: pennymax/dockermatecat_matecat_fix_apache_pid
+    container_name: docker_matecat
+    ## Remove this environment block if you don't need it ##
+    environment:
+      #XDEBUG_CONFIG: 192.168.1.168
+      FILTERS_ADDRESS: http://filters:8732/
+      #FILTERS_ADDRESS: https://translated-matecat-filters-v1.p.mashape.com
+      #FILTERS_MASHAPE_KEY: 9YUU8WZcndmshaWqUZPuAkMzrR0up1T7UITjsn4Zg2NviBOL3o
+      #SMTP_HOST: 10.30.1.225
+      #SMTP_PORT: 2637
+    ## Remove this environment block if you don't need it ##
+
+    volumes:
+      - ~/proj/MateCat:/var/www/matecat:rw
+    ports:
+      - 80:80
+      - 7788:7788
+      - 22
+    networks:
+       - matecat-network
+    links:
+      - mysql
+      - redis
+      - amq
+      - filters

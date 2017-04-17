@@ -1,0 +1,24 @@
+{
+    "langs": [
+        {
+            "localized":[{
+                "en":"Chinese Simplified"
+            }],
+            "isocode":"zh",
+            "enabled":true,
+            "rtl":false,
+            "top":"top10 top20",
+            "rfc3066code":"zh-CN"
+        }
+    ,
+        {
+            "localized":[{
+                "en":"English US"
+            }],
+            "isocode":"en",
+            "enabled":true,
+            "rtl":false,
+            "rfc3066code":"en-US"
+        }
+    ]
+}
